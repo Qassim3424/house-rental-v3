@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}تعديل العقار - بيوت العراق{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>✏️ تعديل العقار</h1>
+
+    <p style="color:#6b7280;">
+        عدّل المعلومات أو استبدل الصورة التي تريدها فقط.
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <label>🏠 عنوان البيت</label>
+            <input type="text" name="title" value="{{ house.title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>🏛️ المحافظة</label>
+
+            <select name="governorate" required
+                    style="width:100%;padding:13px;margin-top:10px;border-radius:8px;border:1px solid #ddd;font-size:16px;">
+
+                <option value="">اختر المحافظة</option>
+
+                {% for gov in [
+                    "بغداد","بابل","كربلاء","النجف","واسط",
+                    "الأنبار","ديالى","صلاح الدين","نينوى",
+                    "كركوك","ذي قار","ميسان","المثنى",
+                    "القادسية","البصرة","دهوك","أربيل","السليمانية"
+                ] %}
+
+                    <option value="{{ gov }}"
+                        {% if house.governorate == gov %}selected{% endif %}>
+                        {{ gov }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>📍 المنطقة / الحي</label>
+            <input type="text" name="location" value="{{ house.location }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>💰 سعر الإيجار الشهري</label>
+            <input type="number" name="price" value="{{ house.price }}" min="0" required>
+        </div>
+
+            <div class="form-group">
+    <label>📌 حالة العقار</label>
+
+    <select name="status">
+        <option value="available" {% if house.status == "available" %}selected{% endif %}>
+            ✅ متاح
+        </option>
+
+        <option value="rented" {% if house.status == "rented" %}selected{% endif %}>
+            🏠 مؤجر
+        </option>
+
+        <option value="sold" {% if house.status == "sold" %}selected{% endif %}>
+            💰 مباع
+        </option>
+    </select>
+</div>
+
+        <div class="form-group">
+            <label>📝 وصف العقار</label>
+
+            <textarea name="description" rows="6">{{ house.description or "" }}</textarea>
+        </div>
+
+        <hr style="margin:25px 0;">
+
+        <h2>📸 صور العقار</h2>
+
+        <p style="color:#6b7280;">
+            اختر صورة جديدة فقط للصورة التي تريد استبدالها.
+            باقي الصور ستبقى كما هي.
+        </p>
+
+        <!-- الصورة 1 -->
+
+        <div style="margin-top:20px;">
+
+            <strong>الصورة الأولى</strong>
+
+            {% if house.image1 %}
+
+                <img
+                    src="{{ url_for('uploaded_file', filename=house.image1) }}"
+                    style="
+                        display:block;
+                        width:100%;
+                        max-height:220px;
+                        object-fit:cover;
+                        border-radius:14px;
+                        margin:10px 0;
+                    "
+                >
+
+            {% else %}
+
+                <div style="padding:30px;text-align:center;background:#f3f4f6;border-radius:14px;">
+                    لا توجد صورة
+                </div>
+
+            {% endif %}
+
+            <input
+                type="file"
+                name="image1"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+        </div>
+
+
+        <!-- الصورة 2 -->
+
+        <div style="margin-top:25px;">
+
+            <strong>الصورة الثانية</strong>
+
+            {% if house.image2 %}
+
+                <img
+                    src="{{ url_for('uploaded_file', filename=house.image2) }}"
+                    style="
+                        display:block;
+                        width:100%;
+                        max-height:220px;
+                        object-fit:cover;
+                        border-radius:14px;
+                        margin:10px 0;
+                    "
+                >
+
+            {% else %}
+
+                <div style="padding:30px;text-align:center;background:#f3f4f6;border-radius:14px;">
+                    لا توجد صورة
+                </div>
+
+            {% endif %}
+
+            <input
+                type="file"
+                name="image2"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+        </div>
+
+
+        <!-- الصورة 3 -->
+
+        <div style="margin-top:25px;">
+
+            <strong>الصورة الثالثة</strong>
+
+            {% if house.image3 %}
+
+                <img
+                    src="{{ url_for('uploaded_file', filename=house.image3) }}"
+                    style="
+                        display:block;
+                        width:100%;
+                        max-height:220px;
+                        object-fit:cover;
+                        border-radius:14px;
+                        margin:10px 0;
+                    "
+                >
+
+            {% else %}
+
+                <div style="padding:30px;text-align:center;background:#f3f4f6;border-radius:14px;">
+                    لا توجد صورة
+                </div>
+
+            {% endif %}
+
+            <input
+                type="file"
+                name="image3"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+        </div>
+
+
+        <hr style="margin:30px 0;">
+
+
+        <!-- الفيديو -->
+
+        <h2>🎥 فيديو العقار</h2>
+
+        {% if house.video %}
+
+            <video
+                controls
+                style="
+                    width:100%;
+                    max-height:400px;
+                    margin-top:15px;
+                    border-radius:15px;
+                    background:#000;
+                "
+            >
+                <source src="{{ url_for('uploaded_file', filename=house.video) }}">
+            </video>
+
+        {% else %}
+
+            <p style="color:#6b7280;">
+                لا يوجد فيديو حاليًا.
+            </p>
+
+        {% endif %}
+
+        <div class="form-group" style="margin-top:15px;">
+
+            <label>🎥 استبدال الفيديو</label>
+
+            <input
+                type="file"
+                name="video"
+                accept="video/mp4,video/webm,video/quicktime"
+            >
+
+            <small style="color:#6b7280;">
+                اتركه فارغًا للاحتفاظ بالفيديو الحالي.
+            </small>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="width:100%;margin-top:20px;"
+        >
+            💾 حفظ التعديلات
+        </button>
+
+        <a
+            href="/my-houses"
+            class="btn"
+            style="display:block;text-align:center;margin-top:10px;"
+        >
+            إلغاء
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

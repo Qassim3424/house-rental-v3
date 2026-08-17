@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}الرئيسية - بيوت العراق{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>اعثر على بيتك بسهولة 🏠</h1>
+
+    <p>
+        ابحث عن أفضل البيوت والشقق المعروضة للإيجار
+    </p>
+
+    <form action="/" method="GET" class="search-box professional-search">
+
+    <div class="search-field search-main">
+        <label for="search-q">البحث</label>
+        <input
+            id="search-q"
+            type="text"
+            name="q"
+            value="{{ request.args.get('q', '') }}"
+            placeholder="اسم البيت أو الحي أو المنطقة"
+        >
+    </div>
+
+    <div class="search-field">
+        <label for="search-location">المحافظة</label>
+        <select id="search-location" name="location">
+            <option value="">كل المحافظات</option>
+            <option value="بغداد" {% if request.args.get('location') == 'بغداد' %}selected{% endif %}>بغداد</option>
+            <option value="بابل" {% if request.args.get('location') == 'بابل' %}selected{% endif %}>بابل</option>
+            <option value="كربلاء" {% if request.args.get('location') == 'كربلاء' %}selected{% endif %}>كربلاء</option>
+            <option value="النجف" {% if request.args.get('location') == 'النجف' %}selected{% endif %}>النجف</option>
+            <option value="واسط" {% if request.args.get('location') == 'واسط' %}selected{% endif %}>واسط</option>
+            <option value="الأنبار" {% if request.args.get('location') == 'الأنبار' %}selected{% endif %}>الأنبار</option>
+            <option value="ديالى" {% if request.args.get('location') == 'ديالى' %}selected{% endif %}>ديالى</option>
+            <option value="صلاح الدين" {% if request.args.get('location') == 'صلاح الدين' %}selected{% endif %}>صلاح الدين</option>
+            <option value="نينوى" {% if request.args.get('location') == 'نينوى' %}selected{% endif %}>نينوى</option>
+            <option value="كركوك" {% if request.args.get('location') == 'كركوك' %}selected{% endif %}>كركوك</option>
+            <option value="ذي قار" {% if request.args.get('location') == 'ذي قار' %}selected{% endif %}>ذي قار</option>
+            <option value="ميسان" {% if request.args.get('location') == 'ميسان' %}selected{% endif %}>ميسان</option>
+            <option value="المثنى" {% if request.args.get('location') == 'المثنى' %}selected{% endif %}>المثنى</option>
+            <option value="القادسية" {% if request.args.get('location') == 'القادسية' %}selected{% endif %}>القادسية</option>
+            <option value="البصرة" {% if request.args.get('location') == 'البصرة' %}selected{% endif %}>البصرة</option>
+            <option value="دهوك" {% if request.args.get('location') == 'دهوك' %}selected{% endif %}>دهوك</option>
+            <option value="أربيل" {% if request.args.get('location') == 'أربيل' %}selected{% endif %}>أربيل</option>
+            <option value="السليمانية" {% if request.args.get('location') == 'السليمانية' %}selected{% endif %}>السليمانية</option>
+        </select>
+    </div>
+
+    <div class="price-fields">
+
+        <div class="search-field">
+            <label for="min-price">أقل سعر</label>
+            <input
+                id="min-price"
+                type="number"
+                name="min_price"
+                value="{{ request.args.get('min_price', '') }}"
+                placeholder="مثال: 300000"
+                min="0"
+            >
+        </div>
+
+        <div class="search-field">
+            <label for="max-price">أعلى سعر</label>
+            <input
+                id="max-price"
+                type="number"
+                name="max_price"
+                value="{{ request.args.get('max_price', '') }}"
+                placeholder="مثال: 700000"
+                min="0"
+            >
+        </div>
+
+    </div>
+
+    <button type="submit" class="search-submit">
+        بحث عن عقار
+    </button>
+
+</form>
+
+</section>
+
+
+<h2 class="section-title">
+    🏠 أحدث العقارات
+</h2>
+
+
+{% if houses %}
+
+<div class="houses-grid">
+
+
+    {% for house in houses %}
+
+    <article class="house-card">
+<div class="house-image">
+
+{% if house.status == "available" %}
+<div style="position:absolute;top:12px;left:12px;background:#16a34a;color:white;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:bold;z-index:999;">
+✅ متاح
+</div>
+
+{% elif house.status == "rented" %}
+<div style="position:absolute;top:12px;left:12px;background:#f59e0b;color:white;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:bold;z-index:999;">
+🏠 مؤجر
+</div>
+
+{% elif house.status == "sold" %}
+<div style="position:absolute;top:12px;left:12px;background:#dc2626;color:white;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:bold;z-index:999;">
+💰 مباع
+</div>
+{% endif %}
+
+
+            {% if house.image1 %}
+<img src="{{ url_for('uploaded_file', filename=house.image1) }}"
+     alt="{{ house.title }}"
+     style="width:100%; height:100%; object-fit:cover; position:relative; z-index:1;">
+            {% else %}
+                🏠
+            {% endif %}
+        </div>
+
+        <div class="house-content">
+
+            <h3 class="house-title">
+                {{ house.title }}
+            </h3>
+              
+
+{% if house.status == "available" %}
+<span style="background:#16a34a;color:white;padding:4px 10px;border-radius:8px;">
+✅ متاح
+</span>
+
+{% elif house.status == "rented" %}
+<span style="background:#f59e0b;color:white;padding:4px 10px;border-radius:8px;">
+🏠 مؤجر
+</span>
+
+{% elif house.status == "sold" %}
+<span style="background:#dc2626;color:white;padding:4px 10px;border-radius:8px;">
+💰 مباع
+</span>
+{% endif %}
+
+</div>
+
+            {% if house.governorate %}
+            <div class="location">
+                🏛️ {{ house.governorate }}
+            </div>
+            {% endif %}
+
+            <div class="location">
+                📍 {{ house.location }}
+            </div>
+
+            <div class="price">
+                💰 {{ "{:,}".format(house.price) }} د.ع / شهريًا
+            </div>
+
+            {% if house.description %}
+
+            <p>
+                {{ house.description }}
+            </p>
+
+            {% endif %}
+
+            <div class="owner">
+                👤 المالك:
+                {{ house.owner.username }}
+            </div>
+
+            <a href="{{ url_for('house_detail', house_id=house.id) }}"
+               class="btn btn-primary"
+               style="display:block; text-align:center; margin-top:15px;">
+                👁️ عرض تفاصيل العقار
+            </a>
+
+        </div>
+
+    </article>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="form-card">
+
+    <h2>لا توجد عقارات حاليًا</h2>
+
+    <p>
+        كن أول شخص يضيف عقارًا إلى المنصة.
+    </p>
+
+    {% if session.get("user_id") %}
+
+    <br>
+
+    <a href="/add-house"
+       class="btn btn-primary">
+
+        ➕ أضف بيتك الآن
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

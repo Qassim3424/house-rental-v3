@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}إنشاء حساب - بيوت العراق{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>إنشاء حساب</h1>
+
+    {% if error %}
+        <div class="alert alert-error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+
+        <div class="form-group">
+            <label for="username">اسم المستخدم</label>
+            <input
+                id="username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="phone">📱 رقم الهاتف</label>
+            <input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="07xxxxxxxxx"
+                autocomplete="tel"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">كلمة المرور</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                minlength="6"
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            إنشاء الحساب
+        </button>
+
+    </form>
+
+    <p style="margin-top:18px;">
+        لديك حساب؟
+        <a href="/login" style="color:#1769aa;font-weight:bold;">
+            تسجيل الدخول
+        </a>
+    </p>
+
+</div>
+
+{% endblock %}

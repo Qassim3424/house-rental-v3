@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}عقاراتي - بيوت العراق{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>🏠 عقاراتي</h1>
+
+    {% if houses %}
+
+        <div class="houses-grid">
+
+            {% for house in houses %}
+
+            <article class="house-card">
+
+                <div class="house-image">
+
+                    {% if house.image1 %}
+                        <img
+                            src="{{ url_for('uploaded_file', filename=house.image1) }}"
+                            alt="{{ house.title }}"
+                            style="width:100%; height:100%; object-fit:cover;"
+                        >
+                    {% else %}
+                        🏠
+                    {% endif %}
+
+                </div>
+
+                <div class="house-content">
+
+                    <h3 class="house-title">
+                        {{ house.title }}
+                    </h3>
+
+                    {% if house.governorate %}
+                    <div class="location">
+                        🏛️ {{ house.governorate }}
+                    </div>
+                    {% endif %}
+
+                    <div class="location">
+                        📍 {{ house.location }}
+                    </div>
+
+                    <div class="price">
+                        💰 {{ "{:,}".format(house.price) }} د.ع / شهريًا
+                    </div>
+
+                    <a
+                        href="/house/{{ house.id }}"
+                        class="btn btn-primary"
+                        style="display:block; text-align:center; margin-top:15px;"
+                    >
+                        👁️ عرض العقار
+                    </a>
+
+                    <a
+                        href="/edit-house/{{ house.id }}"
+                        class="btn"
+                        style="
+                            display:block;
+                            text-align:center;
+                            margin-top:10px;
+                        "
+                    >
+                        ✏️ تعديل العقار
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div style="text-align:center; padding:40px 10px;">
+
+            <div style="font-size:60px;">
+                🏠
+            </div>
+
+            <h2>لا توجد عقارات</h2>
+
+            <p>
+                لم تقم بإضافة أي عقار حتى الآن.
+            </p>
+
+            <a
+                href="/add-house"
+                class="btn btn-primary"
+            >
+                ➕ إضافة عقار
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

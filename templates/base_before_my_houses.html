@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}بيوت العراق{% endblock %}</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Tahoma, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e8eaf0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 15px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: #1769aa;
+        }
+
+        .logo span {
+            color: #f59e0b;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #1769aa;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 10px;
+            padding: 11px 18px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background: #1769aa;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #12578f;
+        }
+
+        .btn-light {
+            background: #eef5fb;
+            color: #1769aa;
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 100%;
+            max-width: 1150px;
+            margin: auto;
+            padding: 25px 20px;
+        }
+
+        /* HERO */
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #1769aa,
+                #0f4c75
+            );
+
+            color: white;
+            border-radius: 22px;
+            padding: 45px 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            opacity: .9;
+            margin-bottom: 25px;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            background: white;
+            max-width: 850px;
+            margin: auto;
+            padding: 10px;
+            border-radius: 14px;
+
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 13px;
+            font-size: 16px;
+        }
+
+        /* CARDS */
+
+        .section-title {
+            margin: 25px 0 15px;
+            font-size: 24px;
+        }
+
+        .houses-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(260px, 1fr));
+
+            gap: 18px;
+        }
+
+        .house-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.06);
+
+            transition: .2s;
+        }
+
+        .house-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .house-image {
+            height: 190px;
+            background: #e8edf3;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 45px;
+        }
+
+        .house-content {
+            padding: 17px;
+        }
+
+        .house-title {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .price {
+            color: #1769aa;
+            font-size: 19px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .owner {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* FORMS */
+
+        .form-card {
+            max-width: 600px;
+            margin: 20px auto;
+
+            background: white;
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .form-card h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 13px;
+
+            border: 1px solid #dce1e8;
+            border-radius: 10px;
+
+            outline: none;
+            font-size: 15px;
+        }
+
+        .form-group textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #1769aa;
+        }
+
+        /* ALERT */
+
+        .alert {
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 50px;
+            padding: 30px 20px;
+
+            text-align: center;
+
+            background: #172033;
+            color: #cbd5e1;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .nav-container {
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 32px 15px;
+                border-radius: 16px;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .houses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 18px 12px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                🏠 بيوت<span>العراق</span>
+            </a>
+
+            <div class="nav-links">
+
+                <a href="/">
+                    الرئيسية
+                </a>
+
+                {% if session.get("user_id") %}
+
+                    <a href="/add-house">
+                        إضافة بيت
+                    </a>
+
+                    <a href="/logout">
+                        خروج
+                    </a>
+
+                {% else %}
+
+                    <a href="/login">
+                        دخول
+                    </a>
+
+                    <a href="/register"
+                       class="btn btn-primary">
+                        إنشاء حساب
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- CONTENT -->
+
+    <main class="container">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            🏠 بيوت العراق
+        </p>
+
+        <p>
+            منصة تأجير العقارات
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

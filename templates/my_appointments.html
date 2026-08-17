@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}مواعيدي{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>📅 مواعيدي</h1>
+
+    {% if appointments %}
+
+        {% for appointment in appointments %}
+
+        <div style="
+            border:1px solid #ddd;
+            border-radius:12px;
+            padding:15px;
+            margin-bottom:15px;
+        ">
+
+            <h3>
+                🏠 {{ appointment.house.title }}
+            </h3>
+
+            <p>
+                📆 {{ appointment.date }}
+            </p>
+
+            <p>
+                ⏰ {{ appointment.time }}
+            </p>
+
+            <p>
+                📝 {{ appointment.note or 'لا توجد ملاحظات' }}
+            </p>
+
+            <p>
+                الحالة:
+
+                {% if appointment.status == "pending" %}
+                    🟡 قيد الانتظار
+                {% elif appointment.status == "approved" %}
+                    🟢 تمت الموافقة
+                {% elif appointment.status == "rejected" %}
+                    🔴 مرفوض
+                {% else %}
+                    {{ appointment.status }}
+                {% endif %}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>لا توجد مواعيد.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

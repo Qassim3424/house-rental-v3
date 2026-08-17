@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}حجز موعد{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>📅 حجز موعد معاينة</h1>
+
+    <p>
+        العقار:
+        <strong>{{ house.title }}</strong>
+    </p>
+
+    <form method="POST">
+
+        <div class="form-group">
+            <label>📅 التاريخ</label>
+            <input type="date" name="date" required>
+        </div>
+
+        <div class="form-group">
+            <label>🕒 الوقت</label>
+            <input type="time" name="time" required>
+        </div>
+
+        <div class="form-group">
+            <label>📝 ملاحظة</label>
+            <textarea
+                name="note"
+                placeholder="أي ملاحظة إضافية"
+            ></textarea>
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="width:100%;"
+        >
+            تأكيد الحجز
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

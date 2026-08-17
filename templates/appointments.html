@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}المواعيد الواردة{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>📅 المواعيد الواردة</h1>
+
+    {% if appointments %}
+
+        {% for appointment in appointments %}
+
+        <div style="
+            border:1px solid #ddd;
+            border-radius:12px;
+            padding:15px;
+            margin-bottom:15px;
+        ">
+
+            <h3>
+                🏠 {{ appointment.house.title }}
+            </h3>
+
+            <p>
+                👤 {{ appointment.user.username }}
+            </p>
+
+            <p>
+                📱 {{ appointment.user.phone or 'لا يوجد رقم هاتف' }}
+            </p>
+
+            <p>
+                📆 {{ appointment.date }}
+            </p>
+
+            <p>
+                ⏰ {{ appointment.time }}
+            </p>
+
+            <p>
+                📝 {{ appointment.note or 'لا توجد ملاحظات' }}
+            </p>
+
+            <p>
+                📌 الحالة:
+                {{ appointment.status }}
+            </p>
+             <p>
+                📌 الحالة:
+                {{ appointment.status }}
+             </p>
+
+<a href="/appointment/{{ appointment.id }}/approved"
+   style="
+   background:green;
+   color:white;
+   padding:8px 12px;
+   text-decoration:none;
+   border-radius:8px;
+   margin-left:5px;
+   ">
+   ✅ موافقة
+</a>
+
+<a href="/appointment/{{ appointment.id }}/rejected"
+   style="
+   background:red;
+   color:white;
+   padding:8px 12px;
+   text-decoration:none;
+   border-radius:8px;
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>لا توجد مواعيد حالياً.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

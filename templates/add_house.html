@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+
+{% block title %}إضافة عقار - بيوت العراق
+
+<script>
+const imageInput = document.querySelector('input[name="images"]');
+const videoInput = document.querySelector('input[name="video"]');
+
+if (imageInput) {
+    imageInput.addEventListener("change", function () {
+
+        const preview = document.getElementById("imagePreview");
+        preview.innerHTML = "";
+
+        const files = Array.from(this.files);
+
+        files.slice(0, 3).forEach(file => {
+
+            if (!file.type.startsWith("image/")) return;
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+
+                const img = document.createElement("img");
+
+                img.src = e.target.result;
+
+                img.style.width = "100%";
+                img.style.height = "120px";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "12px";
+
+                preview.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    });
+}
+
+if (videoInput) {
+    videoInput.addEventListener("change", function () {
+
+        const preview = document.getElementById("videoPreview");
+        preview.innerHTML = "";
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        const video = document.createElement("video");
+
+        video.controls = true;
+        video.src = URL.createObjectURL(file);
+
+        video.style.width = "100%";
+        video.style.maxHeight = "350px";
+        video.style.borderRadius = "15px";
+
+        preview.appendChild(video);
+    });
+}
+
+function previewVideo(input) {
+    const preview = document.getElementById("videoPreview");
+
+    if (!preview) return;
+
+    preview.innerHTML = "";
+
+    const file = input.files[0];
+
+    if (!file) return;
+
+    const video = document.createElement("video");
+
+    video.controls = true;
+    video.src = URL.createObjectURL(file);
+    video.style.width = "100%";
+    video.style.maxHeight = "350px";
+    video.style.borderRadius = "15px";
+
+    preview.appendChild(video);
+}
+
+</script>
+\n
+<script>
+function changePreviewImages() {
+    const input = document.querySelector('input[name="images"]');
+    const preview = document.getElementById("imagePreview");
+
+    if (!input || !preview) return;
+
+    preview.innerHTML = "";
+
+    Array.from(input.files).slice(0, 3).forEach(function(file) {
+
+        if (!file.type.startsWith("image/")) return;
+
+        const img = document.createElement("img");
+
+        img.src = URL.createObjectURL(file);
+
+        img.style.width = "100%";
+        img.style.height = "140px";
+        img.style.objectFit = "cover";
+        img.style.borderRadius = "12px";
+
+        preview.appendChild(img);
+    });
+}
+
+const imageInput = document.querySelector('input[name="images"]');
+
+if (imageInput) {
+    imageInput.addEventListener("change", changePreviewImages);
+}
+
+
+const videoInput = document.querySelector('input[name="video"]');
+
+if (videoInput) {
+    videoInput.addEventListener("change", function() {
+
+        const preview = document.getElementById("videoPreview");
+
+        if (!preview) return;
+
+        preview.innerHTML = "";
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        if (!file.type.startsWith("video/")) return;
+
+        const video = document.createElement("video");
+
+        video.controls = true;
+        video.src = URL.createObjectURL(file);
+
+        video.style.width = "100%";
+        video.style.maxHeight = "350px";
+        video.style.borderRadius = "15px";
+
+        preview.appendChild(video);
+    });
+}
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>🏠 إضافة عقار جديد</h1>
+
+    <p style="color:#6b7280; margin-bottom:20px;">
+        أضف معلومات العقار والصور والفيديو حتى يظهر للمستأجرين.
+    </p>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        <!-- عنوان البيت -->
+
+        <div class="form-group">
+
+            <label>
+                🏠 عنوان البيت
+            </label>
+
+            <input
+                type="text"
+                name="title"
+                placeholder="مثال: بيت عائلي في حي الحسين"
+                required
+            >
+
+        </div>
+
+
+        <!-- المحافظة -->
+
+        <div class="form-group">
+
+            <label>
+                🏛️ المحافظة
+            </label>
+
+            <select
+                name="governorate"
+                required
+                style="
+                    width:100%;
+                    padding:13px;
+                    margin-top:10px;
+                    border-radius:8px;
+                    border:1px solid #ddd;
+                    font-size:16px;
+                "
+            >
+                <option value="">اختر المحافظة</option>
+                <option value="بغداد">بغداد</option>
+                <option value="بابل">بابل</option>
+                <option value="كربلاء">كربلاء</option>
+                <option value="النجف">النجف</option>
+                <option value="واسط">واسط</option>
+                <option value="الأنبار">الأنبار</option>
+                <option value="ديالى">ديالى</option>
+                <option value="صلاح الدين">صلاح الدين</option>
+                <option value="نينوى">نينوى</option>
+                <option value="كركوك">كركوك</option>
+                <option value="ذي قار">ذي قار</option>
+                <option value="ميسان">ميسان</option>
+                <option value="المثنى">المثنى</option>
+                <option value="القادسية">القادسية</option>
+                <option value="البصرة">البصرة</option>
+                <option value="دهوك">دهوك</option>
+                <option value="أربيل">أربيل</option>
+                <option value="السليمانية">السليمانية</option>
+            </select>
+
+        </div>
+
+        <!-- الموقع -->
+
+        <div class="form-group">
+
+            <label>
+                📍 الموقع
+            </label>
+
+            <input
+                type="text"
+                name="location"
+                placeholder="مثال: كربلاء - حي الحسين"
+                required
+            >
+
+        </div>
+
+
+        <!-- السعر -->
+
+        <div class="form-group">
+
+            <label>
+                💰 سعر الإيجار الشهري
+            </label>
+
+            <input
+                type="number"
+                name="price"
+                min="0"
+                placeholder="مثال: 500000"
+                required
+            >
+
+        </div>
+
+
+        <!-- الوصف -->
+
+        <div class="form-group">
+
+            <label>
+                📝 وصف العقار
+            </label>
+
+            <textarea
+                name="description"
+                placeholder="اكتب تفاصيل البيت، عدد الغرف، المساحة، الطابق..."
+            ></textarea>
+
+        </div>
+
+
+        <!-- الصور -->
+
+        <div class="form-group">
+
+            <label>
+                📸 صور العقار
+            </label>
+
+            <input
+                type="file"
+                name="images"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                onchange="changePreviewImages()"
+            >
+
+            <small style="color:#6b7280;">
+                يمكنك اختيار عدة صور.
+            </small>
+
+        </div>
+
+
+        <!-- معاينة الصور -->
+        <div id="imagePreview"
+             style="
+                 display:grid;
+                 grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+                 gap:10px;
+                 margin-top:15px;
+             ">
+        </div>
+
+        <!-- معاينة الفيديو -->
+        <div id="videoPreview" style="margin-top:15px;"></div>
+
+        <!-- الفيديو -->
+
+        <div class="form-group">
+
+            <label>
+                🎥 فيديو العقار
+            </label>
+
+            <input
+                type="file"
+                name="video"
+                accept="video/mp4,video/webm,video/quicktime"
+                onchange="previewVideo(this)"
+            >
+
+            <small style="color:#6b7280;">
+                يفضل استخدام فيديو MP4.
+            </small>
+
+        </div>
+
+
+        <!-- زر النشر -->
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="width:100%; margin-top:10px;">
+
+            🚀 نشر العقار
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

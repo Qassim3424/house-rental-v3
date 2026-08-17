@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}{{ house.title }} - بيوت العراق{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>🏠 {{ house.title }}</h1>
+
+    <div style="color:#6b7280; margin:10px 0;">
+        📍 {{ house.location }}
+    </div>
+
+    <div class="price">
+        💰 {{ "{:,}".format(house.price) }} د.ع / شهريًا
+    </div>
+
+    <!-- معرض الصور -->
+    <div style="margin-top:25px;">
+
+        <div style="
+            width:100%;
+            height:450px;
+            background:#f3f4f6;
+            border-radius:18px;
+            overflow:hidden;
+        ">
+            {% if house.image1 %}
+                <img id="mainHouseImage"
+                     src="{{ url_for('uploaded_file', filename=house.image1) }}"
+                     alt="{{ house.title }}"
+                     style="
+                        width:100%;
+                        height:100%;
+                        object-fit:cover;
+                     ">
+            {% else %}
+                <div style="
+                    width:100%;
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:80px;
+                ">
+                    🏠
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- الصور المصغرة -->
+        <div style="
+            display:flex;
+            gap:10px;
+            margin-top:12px;
+            overflow-x:auto;
+            padding-bottom:5px;
+        ">
+
+            {% if house.image1 %}
+            <img
+                src="{{ url_for('uploaded_file', filename=house.image1) }}"
+                onclick="changeHouseImage(this.src)"
+                style="
+                    width:90px;
+                    height:70px;
+                    object-fit:cover;
+                    border-radius:10px;
+                    cursor:pointer;
+                    border:3px solid #111827;
+                "
+            >
+            {% endif %}
+
+            {% if house.image2 %}
+            <img
+                src="{{ url_for('uploaded_file', filename=house.image2) }}"
+                onclick="changeHouseImage(this.src)"
+                style="
+                    width:90px;
+                    height:70px;
+                    object-fit:cover;
+                    border-radius:10px;
+                    cursor:pointer;
+                    border:3px solid transparent;
+                "
+            >
+            {% endif %}
+
+            {% if house.image3 %}
+            <img
+                src="{{ url_for('uploaded_file', filename=house.image3) }}"
+                onclick="changeHouseImage(this.src)"
+                style="
+                    width:90px;
+                    height:70px;
+                    object-fit:cover;
+                    border-radius:10px;
+                    cursor:pointer;
+                    border:3px solid transparent;
+                "
+            >
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% if house.description %}
+
+        <hr style="margin:25px 0;">
+
+        <h2>📝 وصف العقار</h2>
+
+        <p style="
+            line-height:1.9;
+            color:#374151;
+        ">
+            {{ house.description }}
+        </p>
+
+    {% endif %}
+
+    {% if house.video %}
+
+        <hr style="margin:25px 0;">
+
+        <h2>🎥 فيديو العقار</h2>
+
+        <video controls
+               style="
+                   width:100%;
+                   max-height:550px;
+                   margin-top:15px;
+                   border-radius:18px;
+                   background:#000;
+               ">
+            <source src="{{ url_for('uploaded_file', filename=house.video) }}">
+            المتصفح لا يدعم تشغيل الفيديو.
+        </video>
+
+    {% endif %}
+
+    <hr style="margin:25px 0;">
+
+    <div style="
+        background:#f4f6f8;
+        padding:16px;
+        border-radius:12px;
+    ">
+        👤 المالك:
+        <strong>{{ house.owner.username }}</strong>
+    </div>
+
+    <a href="/"
+       class="btn btn-primary"
+       style="
+           display:block;
+           text-align:center;
+           margin-top:20px;
+       ">
+        ← العودة للعقارات
+    </a>
+
+</div>
+
+<script>
+function changeHouseImage(src) {
+    document.getElementById("mainHouseImage").src = src;
+}
+</script>
+
+{% endblock %}

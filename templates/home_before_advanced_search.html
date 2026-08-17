@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}الرئيسية - بيوت العراق{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>اعثر على بيتك بسهولة 🏠</h1>
+
+    <p>
+        ابحث عن أفضل البيوت والشقق المعروضة للإيجار
+    </p>
+
+    <form action="/" method="GET" class="search-box">
+
+        <input
+            type="text"
+            name="q"
+            value="{{ request.args.get('q', '') }}"
+            placeholder="ابحث عن بيت أو منطقة..."
+        >
+
+        <input
+            type="number"
+            name="min_price"
+            value="{{ request.args.get('min_price', '') }}"
+            placeholder="أقل سعر"
+            min="0"
+        >
+
+        <input
+            type="number"
+            name="max_price"
+            value="{{ request.args.get('max_price', '') }}"
+            placeholder="أعلى سعر"
+            min="0"
+        >
+
+        <button type="submit" class="btn btn-primary">
+            🔎 بحث
+        </button>
+
+    </form>
+
+</section>
+
+
+<h2 class="section-title">
+    🏠 أحدث العقارات
+</h2>
+
+
+{% if houses %}
+
+<div class="houses-grid">
+
+    {% for house in houses %}
+
+    <article class="house-card">
+
+        <div class="house-image">
+            {% if house.image1 %}
+                <img src="{{ url_for('uploaded_file', filename=house.image1) }}"
+                     alt="{{ house.title }}"
+                     style="width:100%; height:100%; object-fit:cover;">
+            {% else %}
+                🏠
+            {% endif %}
+        </div>
+
+        <div class="house-content">
+
+            <h3 class="house-title">
+                {{ house.title }}
+            </h3>
+
+            {% if house.governorate %}
+            <div class="location">
+                🏛️ {{ house.governorate }}
+            </div>
+            {% endif %}
+
+            <div class="location">
+                📍 {{ house.location }}
+            </div>
+
+            <div class="price">
+                💰 {{ "{:,}".format(house.price) }} د.ع / شهريًا
+            </div>
+
+            {% if house.description %}
+
+            <p>
+                {{ house.description }}
+            </p>
+
+            {% endif %}
+
+            <div class="owner">
+                👤 المالك:
+                {{ house.owner.username }}
+            </div>
+
+            <a href="{{ url_for('house_detail', house_id=house.id) }}"
+               class="btn btn-primary"
+               style="display:block; text-align:center; margin-top:15px;">
+                👁️ عرض تفاصيل العقار
+            </a>
+
+        </div>
+
+    </article>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="form-card">
+
+    <h2>لا توجد عقارات حاليًا</h2>
+
+    <p>
+        كن أول شخص يضيف عقارًا إلى المنصة.
+    </p>
+
+    {% if session.get("user_id") %}
+
+    <br>
+
+    <a href="/add-house"
+       class="btn btn-primary">
+
+        ➕ أضف بيتك الآن
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}المفضلة{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>❤️ العقارات المفضلة</h1>
+
+    {% if favorites %}
+
+        {% for favorite in favorites %}
+
+        <div style="
+            border:1px solid #ddd;
+            border-radius:12px;
+            padding:15px;
+            margin-bottom:15px;
+        ">
+
+            <h3>
+                🏠 {{ favorite.house.title }}
+            </h3>
+
+            <p>
+                📍 {{ favorite.house.location }}
+            </p>
+
+            <p>
+                💰 {{ "{:,}".format(favorite.house.price) }} د.ع
+            </p>
+
+            <a href="/house/{{ favorite.house.id }}"
+               style="
+               background:#1769aa;
+               color:white;
+               padding:10px 15px;
+               text-decoration:none;
+               border-radius:8px;
+               display:inline-block;
+               ">
+               عرض العقار
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>لا توجد عقارات مفضلة.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
