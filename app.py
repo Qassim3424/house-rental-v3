@@ -434,6 +434,14 @@ def delete_house(house_id):
         if os.path.isfile(video_path):
             os.remove(video_path)
 
+    # حذف المواعيد المرتبطة بالعقار
+    appointments = Appointment.query.filter_by(
+        house_id=house.id
+    ).all()
+
+    for appointment in appointments:
+        db.session.delete(appointment)
+
     # حذف العقار من قاعدة البيانات
     db.session.delete(house)
     db.session.commit()
