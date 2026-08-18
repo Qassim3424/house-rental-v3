@@ -442,11 +442,20 @@ def delete_house(house_id):
     for appointment in appointments:
         db.session.delete(appointment)
 
-    # حذف العقار من قاعدة البيانات
+    # حذف المفضلات المرتبطة بالعقار
+    favorites = Favorite.query.filter_by(
+        house_id=house.id
+    ).all()
+
+    for favorite in favorites:
+        db.session.delete(favorite)
+
+    # حذف العقار
     db.session.delete(house)
     db.session.commit()
 
     return redirect("/my-houses")
+
 
 
 # =========================
