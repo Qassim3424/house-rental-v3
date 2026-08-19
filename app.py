@@ -85,6 +85,15 @@ def register():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         phone = request.form.get("phone", "").strip()
+        phone = phone.replace(" ", "")
+        phone = phone.replace("-", "")
+
+        if phone.startswith("+964"):
+                phone = phone[1:]
+
+        elif phone.startswith("0"):
+                phone = "964" + phone[1:]
+
         password = request.form.get("password", "")
 
         if not username or not password:
@@ -238,7 +247,17 @@ def account():
     message = None
 
     if request.method == "POST":
+
         phone = request.form.get("phone", "").strip()
+
+        phone = phone.replace(" ", "")
+        phone = phone.replace("-", "")
+
+        if phone.startswith("+964"):
+            phone = phone[1:]
+
+        elif phone.startswith("0"):
+            phone = "964" + phone[1:]
 
         user.phone = phone or None
         db.session.commit()
